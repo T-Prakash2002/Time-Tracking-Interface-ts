@@ -6,7 +6,6 @@ import App from './App';
 import Register from './components/Register';
 import Login from './components/Login';
 import Home from './components/Home';
-import Model from './shared/Model';
 
 const router = createBrowserRouter([
   {
