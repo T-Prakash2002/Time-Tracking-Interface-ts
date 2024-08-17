@@ -1,0 +1,78 @@
+.login{
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login form{
+    width: 40%;
+    height: fit-content;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 0 6px 2px var(--secondary-color);
+    border-radius: 7px;
+    gap: 10px;
+    min-width: fit-content;
+    position: relative;
+}
+
+.login .back-button{
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  cursor: pointer;
+}
+.login .back-button .BackArrow{
+    color: var(--primary-color);
+    font-size: 20px;
+}
+.login .back-button .BackArrow:hover{
+    color: #6c7679;
+}
+
+.login .title{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.login .title h1{
+  font-weight: 800;
+  color: var(--primary-color);
+}
+
+form div{
+    display: flex;
+    flex-direction: column;
+}
+
+form div label{
+    display: flex;
+    justify-content: flex-start;
+    font-size: 14px;
+}
+
+form div input{
+    width: 100%;
+    height: 40px;
+    border: 0.5px solid var(--secondary-color);
+    border-radius: 4px;
+    outline: none;
+}
+
+form div input::placeholder{
+   color: rgb(138, 136, 136);
+   font-size: 14px;
+}
+
+form div button{
+    width: 100%;
+    height: 40px;
+    border: 0.5px solid var(--secondary-color);
+    border-radius: 4px;
+    outline: none;
+}

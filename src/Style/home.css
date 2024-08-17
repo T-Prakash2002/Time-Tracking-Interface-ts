@@ -1,0 +1,84 @@
+
+.home{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.projectListGroup{
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-shadow: 0 0 10px -2px #ccc;
+    width: 100%;
+    /* display: flex; */
+    gap: 10px;
+}
+.projectlist{
+    display: flex;
+    background-color: #e7ebee;
+    padding: 10px;
+    flex-direction: row;
+    gap: 30px;
+
+}
+#projectName{
+    width: 150px;
+}
+
+
+/* .AddProject{
+    background-color: #4c9fcf;
+    display: flex;
+}
+.form-timer{
+
+    background-color: #d8e8f0;
+    padding: 2rem;
+}
+.form-timer form input{
+    min-width: 250px !important;
+    max-width: 300px !important;
+    height: 40px;
+    padding: 5px;
+    border-radius: 3px;
+    border: none;
+    font-size: 14px;
+}
+
+.form-timer form input:hover{
+    outline:1px solid #4c9fcf;
+} */
+
+.timer{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.timerCount{
+    display: flex;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 800;
+    background-color: aliceblue;
+    box-shadow: 0px 1px 10px -2px var(--secondary-color);
+    border-radius: 5px;
+}
+
+.timerBtn button{
+    max-width: 200px;
+}
+.startBtn{
+    background-color: var(--secondary-color);
+    min-width: 150px;
+}
+.startBtn:hover{
+    color: var(--secondary-color);
+    border-color : var(--primary-color);
+}
+
+.card-title{
+    font-size: 20px;
+}
