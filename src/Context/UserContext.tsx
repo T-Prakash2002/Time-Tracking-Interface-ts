@@ -1,6 +1,6 @@
 import React, { useState, useEffect, createContext, ReactNode } from "react";
 import axios from "axios";
-import { BASE_URL } from "../constant";
+import {BASE_URL}from "../constant"
 
 interface User {
   name: string;
