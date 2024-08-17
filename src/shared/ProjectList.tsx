@@ -1,29 +1,38 @@
-import React, { useState, useContext } from "react";
-import Timer from "../shared/Timer";
-import { ContextApi } from "../Context/UserContext";
+import React, { useContext } from 'react';
+import { ContextApi } from '../Context/UserContext';
+import Timer from './Timer';
 
-// Define types for your props
 interface Project {
-  id: number;
+  id: string;
+  userEmail: string;
   project_name: string;
-  // Add other fields as necessary
+  time: number;
+  createDate: Date;
+  startDate: Date | null;
+  endDate: Date | null;
+  status: string;
 }
-
 interface ProjectListProps {
   project: Project;
   setAddEdit: React.Dispatch<React.SetStateAction<{
-    id: number;
+    id: string;
     description: string;
     text: string;
   }>>;
 }
 
 const ProjectList: React.FC<ProjectListProps> = ({ project, setAddEdit }) => {
-  const { setProjects, projects, deleteProject } = useContext(ContextApi);
+  const context = useContext(ContextApi);
 
-  const handleDelete = async (id: number) => {
-    const filterObj = projects.filter((item: Project) => item.id !== id);
-    setProjects(filterObj);
+  if (!context) {
+    throw new Error('useContext must be used within a ContextProvider');
+  }
+
+  const { setProjects, projects, deleteProject } = context;
+
+  const handleDelete = async (id: string) => {
+    const updatedProjects = projects.filter((item) => item.id != id);
+    setProjects(updatedProjects);
     await deleteProject(id);
   };
 
@@ -31,7 +40,7 @@ const ProjectList: React.FC<ProjectListProps> = ({ project, setAddEdit }) => {
     setAddEdit({
       id: project.id,
       description: project.project_name,
-      text: "Edit",
+      text: 'Edit',
     });
   };
 
@@ -46,7 +55,7 @@ const ProjectList: React.FC<ProjectListProps> = ({ project, setAddEdit }) => {
       <div className="flex justify-between mt-4">
         <button
           className="px-4 py-2 border border-yellow-500 text-yellow-500 rounded hover:bg-yellow-500 hover:text-white"
-          onClick={() => handleUpdate()}
+          onClick={handleUpdate}
         >
           Edit
         </button>

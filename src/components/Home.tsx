@@ -3,16 +3,16 @@ import React, { useState, useContext } from "react";
 import "../Style/home.css";
 import ProjectList from "../shared/ProjectList";
 import { ContextApi } from "../Context/UserContext";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 
-interface Project {
+ interface Project {
   id: string;
   userEmail: string;
   project_name: string;
   time: number;
   createDate: Date;
-  endDate: string;
-  startDate: string;
+  startDate: Date | null;
+  endDate: Date | null;
   status: string;
 }
 
@@ -48,8 +48,8 @@ const Home: React.FC = () => {
         project_name: AddEdit.description,
         time: 0,
         createDate: new Date(),
-        endDate: '',
-        startDate: '',
+        endDate:null,
+        startDate: null,
         status: 'stop',
       };
 
