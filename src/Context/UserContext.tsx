@@ -1,6 +1,6 @@
 import React, { useState, useEffect, createContext, ReactNode } from "react";
 import axios from "axios";
-import {BASE_URL}from "../constant"
+// import {BASE_URL} from "../constant"
 
 interface User {
   name: string;
@@ -42,6 +42,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(Boolean(localStorage.getItem("isLoggedIn")));
   const [user, setUser] = useState<User>(JSON.parse(localStorage.getItem("user") || "{}"));
   const [projects, setProjects] = useState<Project[]>([]);
+  const BASE_URL='https://time-tracking-interface-be.onrender.com'
 
   useEffect(() => {
     if (isLoggedIn && user.email) {
