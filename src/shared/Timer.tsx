@@ -2,7 +2,10 @@ import React, { useState, useEffect, useContext } from "react";
 import { formatTime } from "./TimeConvert";
 import { ContextApi } from "../Context/UserContext";
 
-interface Project {
+
+
+
+ interface Project {
   id: string;
   userEmail: string;
   project_name: string;
@@ -12,103 +15,70 @@ interface Project {
   endDate: Date | null;
   status: string;
 }
-
-interface TimerProps {
-  project: Project;
+interface ContextProps {
+  projects: Project[];
+  setProjects: React.Dispatch<React.SetStateAction<Project[]>>;
+  updateProject: (id: string, updatedProject: Project) => Promise<void>;
 }
 
-const Timer: React.FC<TimerProps> = ({ project }) => {
-  const { setProjects, projects, updateProject } = useContext(ContextApi);
+const Timer: React.FC<{ project: Project }> = ({ project }) => {
+  const { setProjects, projects, updateProject } = useContext(ContextApi) as ContextProps;
 
   const [timeElapsed, setTimeElapsed] = useState<number>(project.time);
   const [isActive, setIsActive] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(false);
 
   useEffect(() => {
-    let intervalId: NodeJS.Timeout;
+    let intervalId: number;
     if (isActive) {
       intervalId = setInterval(() => {
         setTimeElapsed((prevTime) => prevTime + 1);
       }, 1000);
     }
-
     return () => clearInterval(intervalId);
   }, [isActive]);
 
-  // Time Start
+  const updateProjectStatus = async (status: string, endDate: Date | null = null) => {
+    const fetchP = projects.find((item) => item.id === project.id);
+
+    if (fetchP) {
+      const updatedProject: Project = {
+        ...fetchP,
+        status,
+        time: timeElapsed,
+        endDate,
+        startDate: status === "Active" ? new Date() : fetchP.startDate,
+      };
+
+      try {
+        await updateProject(project.id, updatedProject);
+        setProjects((prevProjects) =>
+          prevProjects.map((p) =>
+            p.id === project.id ? updatedProject : p
+          )
+        );
+      } catch (error) {
+        console.error("Failed to update project", error);
+      }
+    }
+  };
+
   const handleStart = async () => {
     setIsActive(true);
     setIsPaused(false);
-
-    const fetchP = projects.find((item) => item.id === project.id);
-
-    if (fetchP) {
-      const updateProjectObj = {
-        ...fetchP,
-        startDate: new Date(),
-        status: "Active",
-      };
-      await updateProject(project.id, updateProjectObj);
-
-      setProjects((prevProjects) =>
-        prevProjects.map((p) =>
-          p.id === project.id
-            ? { ...p, startDate: new Date(), status: "Active" }
-            : p
-        )
-      );
-    }
+    await updateProjectStatus("Active");
   };
 
-  // Time Pause
   const handleStartPause = async () => {
     setIsActive(!isActive);
     setIsPaused(!isPaused);
-
-    const fetchP = projects.find((item) => item.id === project.id);
-
-    if (fetchP) {
-      const updateProjectObj = {
-        ...fetchP,
-        status: "Pause",
-        time: timeElapsed,
-      };
-      await updateProject(project.id, updateProjectObj);
-
-      setProjects((prevProjects) =>
-        prevProjects.map((p) =>
-          p.id === project.id
-            ? { ...p, status: "Pause", time: timeElapsed }
-            : p
-        )
-      );
-    }
+    await updateProjectStatus(isPaused ? "Active" : "Pause");
   };
 
-  // Time Stop
   const handleStop = async () => {
     setIsActive(false);
     setIsPaused(false);
-
-    const fetchP = projects.find((item) => item.id === project.id);
-
-    if (fetchP) {
-      const updateProjectObj = {
-        ...fetchP,
-        status: "stop",
-        time: timeElapsed,
-        endDate: new Date(),
-      };
-      await updateProject(project.id, updateProjectObj);
-
-      setProjects((prevProjects) =>
-        prevProjects.map((p) =>
-          p.id === project.id
-            ? { ...p, time: timeElapsed, endDate: new Date(), status: "stop" }
-            : p
-        )
-      );
-    }
+    await updateProjectStatus("stop", new Date());
   };
 
   return (

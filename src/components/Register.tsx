@@ -1,7 +1,6 @@
-
 import React, { useState, useContext, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { ContextApi } from "../Context/UserContext"; 
+import { ContextApi } from "../Context/UserContext";
 
 interface FormData {
   name: string;
@@ -9,6 +8,11 @@ interface FormData {
   password: string;
   confirmPassword: string;
 }
+
+interface ContextProps {
+  register: (name: string, email: string, password: string) => Promise<string>;
+}
+
 
 const Register: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
@@ -18,7 +22,7 @@ const Register: React.FC = () => {
     confirmPassword: "",
   });
 
-  const { register } = useContext(ContextApi);
+  const { register } = useContext(ContextApi) as ContextProps;
 
   const navigate = useNavigate();
 
@@ -34,13 +38,17 @@ const Register: React.FC = () => {
       return;
     }
 
-    const ApiRes = await register(formData.name, formData.email, formData.password);
+    try {
+      const ApiRes = await register(formData.name, formData.email, formData.password);
 
-    if (ApiRes === "User created successfully") {
-      alert(ApiRes);
-      navigate("/");
-    } else {
-      alert(ApiRes);
+      if (ApiRes === "User created successfully") {
+        alert(ApiRes);
+        navigate("/");
+      } else {
+        alert(ApiRes);
+      }
+    } catch (error) {
+      alert("An error occurred during registration.");
     }
   };
 
@@ -151,4 +159,3 @@ const Register: React.FC = () => {
 };
 
 export default Register;
-

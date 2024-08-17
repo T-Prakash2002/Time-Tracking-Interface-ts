@@ -3,18 +3,34 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import { ContextApi } from "../Context/UserContext";
 import "../Style/navbar.css";
 
+interface ContextProps {
+  isLoggedIn: boolean;
+  logout: () => void;
+}
+
+
 const Navbar: React.FC = () => {
-  const { isLoggedIn,logout } = useContext(ContextApi);
+  const { isLoggedIn, logout } = useContext(ContextApi) as ContextProps;
   const navigate = useNavigate();
-  const [modal, setModal] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleLogoutClick = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
+  const handleLogoutConfirm = () => {
+    setIsModalOpen(false);
+    logout();
+    navigate("/");
+  };
 
   return (
     <>
       <nav className="bg-gray-800 p-3">
         <div className="container mx-auto flex items-center justify-between">
-          <a className="text-white font-bold" href="#">
+          <Link to="/" className="text-white font-bold">
             <i className="bi bi-hourglass-split"></i> Time Tracking
-          </a>
+          </Link>
           <button
             className="text-white md:hidden"
             type="button"
@@ -35,14 +51,12 @@ const Navbar: React.FC = () => {
                 <div className="flex gap-2">
                   <button
                     className="bg-gray-700 text-white py-2 px-4 rounded"
-                    onClick={() => {
-                      setModal(!modal);
-                    }}
+                    onClick={handleLogoutClick}
                   >
                     Log Out
                   </button>
 
-                  {modal && (
+                  {isModalOpen && (
                     <div
                       className="relative z-10"
                       aria-labelledby="modal-title"
@@ -64,29 +78,23 @@ const Navbar: React.FC = () => {
                                     className="text-base font-semibold leading-6 text-gray-900"
                                     id="modal-title"
                                   >
-                                    Are you Logout?
+                                    Are you sure you want to log out?
                                   </h3>
                                 </div>
                               </div>
                             </div>
-                            <div className=" px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                            <div className="px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                               <button
                                 type="button"
                                 className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                                onClick={() => {
-                                  setModal(!modal);
-                                  navigate("/");
-                                  logout();
-                                }}
+                                onClick={handleLogoutConfirm}
                               >
                                 Log Out
                               </button>
                               <button
                                 type="button"
                                 className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                                onClick={() => {
-                                  setModal(!modal);
-                                }}
+                                onClick={handleLogoutClick}
                               >
                                 Cancel
                               </button>
@@ -96,7 +104,6 @@ const Navbar: React.FC = () => {
                       </div>
                     </div>
                   )}
-
                 </div>
               ) : (
                 <div className="flex gap-2">

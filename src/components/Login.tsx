@@ -1,22 +1,24 @@
-
 import React, { useState, useContext, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { ContextApi } from "../Context/UserContext"; // Corrected the typo
-import "../Style/register.css"; // Assuming you'll also convert this to Tailwind CSS
+import { ContextApi } from "../Context/UserContext";
 
 interface FormData {
   email: string;
   password: string | number;
 }
 
+interface ContextProps {
+  login: (email: string, password: string | number) => Promise<string>;
+}
+
+
 const Login: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     email: "",
-    password: '',
+    password: "",
   });
 
-  const { login } = useContext(ContextApi);
-
+  const { login } = useContext(ContextApi) as ContextProps;
   const navigate = useNavigate();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -26,13 +28,17 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const ApiRes = await login(formData.email, formData.password);
+    try {
+      const ApiRes = await login(formData.email, formData.password);
 
-    if (ApiRes === "Login Successful") {
-      alert(ApiRes);
-      navigate("/");
-    } else {
-      alert(ApiRes);
+      if (ApiRes === "Login Successful") {
+        alert(ApiRes);
+        navigate("/");
+      } else {
+        alert(ApiRes);
+      }
+    } catch (error) {
+      alert("An error occurred during login.");
     }
   };
 

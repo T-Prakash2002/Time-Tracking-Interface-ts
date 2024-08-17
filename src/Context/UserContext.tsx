@@ -14,23 +14,24 @@ interface Project {
   project_name: string;
   time: number;
   createDate: Date;
-  endDate: string;
-  startDate: string;
+  startDate: Date | null;
+  endDate: Date | null;
   status: string;
 }
 
 interface ContextProps {
-  isLoggedIn: boolean;
-  user: User;
+  user: { email: string };
+  addProject: (project: Project) => Promise<void>;
+  deleteProject: (id: string) => Promise<void>;
   projects: Project[];
+  setProjects: React.Dispatch<React.SetStateAction<Project[]>>;
+  updateProject: (id: string, updatedProject: Project) => Promise<void>;
+  isLoggedIn: boolean;
   register: (name: string, email: string, password: string) => Promise<string | void>;
   login: (email: string, password: string) => Promise<string>;
   logout: () => void;
-  addProject: (project: Project) => Promise<void>;
-  deleteProject: (id: string) => Promise<void>;
-  updateProject: (id: string, project: Project) => Promise<void>;
-  setProjects: React.Dispatch<React.SetStateAction<Project[]>>;
 }
+
 
 const ContextApi = createContext<ContextProps | undefined>(undefined);
 
