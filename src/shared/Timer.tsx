@@ -97,15 +97,15 @@ const Timer: React.FC<{ project: Project }> = ({ project }) => {
       <div className="timerBtn">
         {isActive || isPaused ? (
           <>
-            <button className="btn btn-secondary" onClick={handleStartPause}>
+            <button className="px-4 py-2 border border-black text-black rounded hover:bg-black hover:text-white" onClick={handleStartPause}>
               {isPaused ? "Continue" : "Pause"}
             </button>
-            <button className="btn btn-dark" onClick={handleStop}>
+            <button className="px-4 py-2 border border-black text-black rounded hover:bg-black hover:text-white" onClick={handleStop}>
               Stop
             </button>
           </>
         ) : (
-          <button className="btn startBtn" onClick={handleStart}>
+          <button className="px-4 py-2 border border-black text-black rounded hover:bg-black hover:text-white startBtn" onClick={handleStart}>
             Start
           </button>
         )}

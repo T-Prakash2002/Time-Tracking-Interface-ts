@@ -70,15 +70,5 @@
 .timerBtn button{
     max-width: 200px;
 }
-.startBtn{
-    background-color: var(--secondary-color);
-    min-width: 150px;
-}
-.startBtn:hover{
-    color: var(--secondary-color);
-    border-color : var(--primary-color);
-}
 
-.card-title{
-    font-size: 20px;
-}
+
